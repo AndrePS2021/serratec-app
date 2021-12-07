@@ -1,47 +1,33 @@
-import * as React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
+import { AntDesign } from "@expo/vector-icons";
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
-} from '@react-navigation/drawer';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+} from "@react-navigation/drawer";
+import { NavigationContainer } from "@react-navigation/native";
 import {
-  NativeBaseProvider,
-  Button,
   Box,
-  HamburgerIcon,
-  Pressable,
-  Heading,
-  VStack,
-  Text,
-  Center,
-  HStack,
   Divider,
+  HStack,
   Icon,
-} from 'native-base';
+  Pressable,
+  Text,
+  VStack,
+} from "native-base";
+import React, { useContext } from "react";
+import Login from "../pages/Login";
+import TesteStack from "../pages/TesteStack";
+import { UsuarioContext } from "../context";
+
 const Drawer = createDrawerNavigator();
-function Component(props) {
-  return (
-      <Center>
-       <Text mt="12" fontSize="18">This is {props.route.name} page.</Text>
-     </Center>
-  );
-}
 
 const getIcon = (screenName) => {
   switch (screenName) {
-    case 'Inbox':
-      return 'email';
-    case 'Outbox':
-      return 'send';
-    case 'Favorites':
-      return 'heart';
-    case 'Archive':
-      return 'archive';
-    case 'Trash':
-      return 'trash-can';
-    case 'Spam':
-      return 'alert-circle';
+    case "Alunos":
+      return "user";
+    case "Login":
+      return "login";
+    case "Materias":
+      return "book";
     default:
       return undefined;
   }
@@ -52,11 +38,11 @@ function CustomDrawerContent(props) {
     <DrawerContentScrollView {...props} safeArea>
       <VStack space="6" my="2" mx="1">
         <Box px="4">
-          <Text bold color="gray.700">
-            Mail
+          <Text bold color="#A2A1A6">
+            {props.usuario?.nome}
           </Text>
-          <Text fontSize="14" mt="1" color="gray.500" fontWeight="500">
-            john_doe@gmail.com
+          <Text fontSize="14" mt="1" color="#A2A1A6" fontWeight="500">
+            {props.usuario?.email}
           </Text>
         </Box>
         <VStack divider={<Divider />} space="4">
@@ -68,102 +54,55 @@ function CustomDrawerContent(props) {
                 rounded="md"
                 bg={
                   index === props.state.index
-                    ? 'rgba(6, 182, 212, 0.1)'
-                    : 'transparent'
+                    ? "rgba(154, 224, 236, 0.1)"
+                    : "transparent"
                 }
                 onPress={(event) => {
                   props.navigation.navigate(name);
                 }}
                 key={index}
-                >
+              >
                 <HStack space="7" alignItems="center">
                   <Icon
-                    color={
-                      index === props.state.index ? 'primary.500' : 'gray.500'
-                    }
+                    color={index === props.state.index ? "#504AFF" : "#A2A1A6"}
                     size="5"
-                    as={<MaterialCommunityIcons name={getIcon(name)} />}
+                    as={<AntDesign name={getIcon(name)} />}
                   />
                   <Text
                     fontWeight="500"
-                    color={
-                      index === props.state.index ? 'primary.500' : 'gray.700'
-                    }>
+                    color={index === props.state.index ? "#504AFF" : "#A2A1A6"}
+                  >
                     {name}
                   </Text>
                 </HStack>
               </Pressable>
             ))}
           </VStack>
-          <VStack space="5">
-            <Text fontWeight="500" fontSize="14" px="5" color="gray.500">
-              Labels
-            </Text>
-            <VStack space="3">
-              <Pressable px="5" py="3">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text color="gray.700" fontWeight="500">
-                    Family
-                  </Text>
-                </HStack>
-              </Pressable>
-              <Pressable px="5" py="2">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text color="gray.700" fontWeight="500">
-                    Friends
-                  </Text>
-                </HStack>
-              </Pressable>
-              <Pressable px="5" py="3">
-                <HStack space="7" alignItems="center">
-                  <Icon
-                    color="gray.500"
-                    size="5"
-                    as={<MaterialCommunityIcons name="bookmark" />}
-                  />
-                  <Text fontWeight="500" color="gray.700">
-                    Work
-                  </Text>
-                </HStack>
-              </Pressable>
-            </VStack>
-          </VStack>
         </VStack>
       </VStack>
     </DrawerContentScrollView>
   );
 }
-function MyDrawer() {
+function MyDrawer({ usuario }) {
   return (
     <Box safeArea flex={1}>
       <Drawer.Navigator
-        drawerContent={(props) => <CustomDrawerContent {...props} />}>
-        <Drawer.Screen name="Inbox" component={Component} />
-        <Drawer.Screen name="Outbox" component={Component} />
-        <Drawer.Screen name="Favorites" component={Component} />
-        <Drawer.Screen name="Archive" component={Component} />
-        <Drawer.Screen name="Trash" component={Component} />
-        <Drawer.Screen name="Spam" component={Component} />
+        drawerContent={(props) => (
+          <CustomDrawerContent usuario={usuario} {...props} />
+        )}
+      >
+        <Drawer.Screen name="Login" component={Login} />
+        <Drawer.Screen name="Alunos" component={Login} />
+        <Drawer.Screen name="Materias" component={Login} />
       </Drawer.Navigator>
     </Box>
   );
 }
-export default function App() {
+export default function Menu() {
+  const { usuario } = useContext(UsuarioContext);
   return (
     <NavigationContainer>
-      <NativeBaseProvider>
-        <MyDrawer />
-      </NativeBaseProvider>
+      <MyDrawer usuario={usuario} />
     </NavigationContainer>
   );
 }
