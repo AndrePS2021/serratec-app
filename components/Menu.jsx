@@ -17,6 +17,9 @@ import React, { useContext } from "react";
 import Login from "../pages/Login";
 import TesteStack from "../pages/TesteStack";
 import { UsuarioContext } from "../context";
+import Alunos from '../pages/Alunos';
+import Materias from '../pages/Materias';
+
 
 const Drawer = createDrawerNavigator();
 
@@ -92,8 +95,8 @@ function MyDrawer({ usuario }) {
         )}
       >
         <Drawer.Screen name="Login" component={Login} />
-        <Drawer.Screen name="Alunos" component={Login} />
-        <Drawer.Screen name="Materias" component={Login} />
+        <Drawer.Screen name="Alunos" component={Alunos} />
+        <Drawer.Screen name="Materias" component={Materias} />
       </Drawer.Navigator>
     </Box>
   );
