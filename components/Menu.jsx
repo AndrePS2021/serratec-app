@@ -18,8 +18,7 @@ import Login from "../pages/Login";
 import TesteStack from "../pages/TesteStack";
 import { UsuarioContext } from "../context";
 import Alunos from '../pages/Alunos';
-import Materias from '../pages/Materias';
-
+import Materias from "../pages/Materias";
 
 const Drawer = createDrawerNavigator();
 
@@ -93,14 +92,17 @@ function MyDrawer({ usuario }) {
         drawerContent={(props) => (
           <CustomDrawerContent usuario={usuario} {...props} />
         )}
+        screenOptions={{headerShown: usuario ? true : false}}
+        initialRouteName="Login"
       >
         <Drawer.Screen name="Login" component={Login} />
-        <Drawer.Screen name="Alunos" component={Alunos} />
+        <Drawer.Screen name="Alunos" component={Alunos} /> 
         <Drawer.Screen name="Materias" component={Materias} />
       </Drawer.Navigator>
     </Box>
   );
 }
+
 export default function Menu() {
   const { usuario } = useContext(UsuarioContext);
   return (
